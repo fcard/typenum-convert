@@ -4,8 +4,6 @@
 pub mod conv;
 pub use conv::{T8, T16, T32, T64};
 
-pub mod to_uint;
-
 pub(crate) mod test;
 
 #[cfg(feature = "norm")]

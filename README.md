@@ -10,6 +10,9 @@ branch = "1.0.0"
 # Example
 
 ```rs
+#![feature(const_generic_exprs)]
+#![allow(incomplete_features)]
+
 use typenum_convert::*;
 use typenum::{U4, Unsigned};
 use std::ops::Add;

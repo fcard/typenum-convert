@@ -24,7 +24,8 @@ macro_rules! def1 {
     #[cfg_attr(test, allow(unused))]
     pub fn $main() {
       $(
-        println!("{}", <$T<{$e}>>::to_u64());
+        println!("{}<{{{}}}> == {}",
+          stringify!($T), stringify!($e), <$T<{$e}>>::to_u64());
       )*
     }
   }

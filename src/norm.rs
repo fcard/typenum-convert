@@ -35,8 +35,9 @@ where Self: Unsigned {
 }
 
 impl<N: Unsigned + TypeNumNormalize, Bx: Bit, By: Bit>
-TypeNumNormalize2 for UInt<UInt<N, Bx>, By>  {
-  type TypeNorm2 = N;
+TypeNumNormalize2 for UInt<UInt<N, Bx>, By>
+where Self: TypeNumNormalize {
+  type TypeNorm2 = UInt<UInt<N, Bx>, By>;
 }
 
 impl TypeNumNormalize2 for UInt<UTerm, B0>

@@ -45,10 +45,10 @@ type D<const N: u8, const P: u8> =
   <Conv8<{fbit(N,P)}>
     as TypeNumDigitConvert>::TypeDigit;
 
-pub type T8<const N: u8>   = T8p<N, UTerm>;
-pub type T16<const N: u16> = T16p<N, UTerm>;
-pub type T32<const N: u32> = T32p<N, UTerm>;
-pub type T64<const N: u64> = T64p<N, UTerm>;
+pub type T8<const N: u8>   = Norm<T8p<N, UTerm>>;
+pub type T16<const N: u16> = Norm<T16p<N, UTerm>>;
+pub type T32<const N: u32> = Norm<T32p<N, UTerm>>;
+pub type T64<const N: u64> = Norm<T64p<N, UTerm>>;
 
 type UC8<
   B1, B2, B3, B4, B5, B6, B7, B8, Tail> =

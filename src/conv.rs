@@ -56,7 +56,7 @@ type UC8<
     B1>, B2>, B3>, B4>, B5>, B6>, B7>, B8>;
 
 #[cfg(feature = "norm")]
-pub type Norm<T> = <T as norm::TypeNumNormalize>::TypeNorm;
+pub type Norm<T> = <T as norm::Norm>::Output;
 
 #[cfg(not(feature = "norm"))]
 pub type Norm<T> = T;

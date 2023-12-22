@@ -3,49 +3,49 @@ use typenum::Unsigned;
 use typenum::{Bit, B1, B0};
 use typenum::UInt;
 
-pub trait TypeNumNormalize: TypeNumNormalize2 {
-  type TypeNorm: Unsigned +
-                 TypeNumNormalize;
+pub trait Norm: NormI<UTerm,UTerm> {
+  type Output;
 }
 
-pub trait TypeNumNormalize2 {
-  type TypeNorm2: Unsigned + TypeNumNormalize;
+impl<N: Unsigned + NormI<UTerm,UTerm>> Norm for N
+where <N as NormI<UTerm,UTerm>>::Output: Inv<UTerm> {
+  type Output =
+    <<N as NormI<UTerm,UTerm>>::Output
+      as Inv<UTerm>>::Output;
 }
 
-impl<N: Unsigned + TypeNumNormalize, Bx: Bit>
-TypeNumNormalize for UInt<UInt<N, Bx>, B0>
-where Self: Unsigned {
-  type TypeNorm =
-    <UInt<
-      UInt<<N as TypeNumNormalize>::TypeNorm, Bx>, B0>
-      as TypeNumNormalize2>::TypeNorm2;
+pub trait NormI<A: Unsigned, B: Unsigned>: Unsigned {
+  type Output;
 }
 
-impl<N: Unsigned + TypeNumNormalize, Bx: Bit>
-TypeNumNormalize for UInt<UInt<N, Bx>, B1>
-where Self: Unsigned {
-  type TypeNorm =
-    UInt<
-      UInt<<N as TypeNumNormalize>::TypeNorm, Bx>, B1>;
+impl<A: Unsigned, B: Unsigned> NormI<A,B> for UTerm {
+  type Output = B;
 }
 
-impl TypeNumNormalize for UTerm
-where Self: Unsigned {
-  type TypeNorm = UTerm;
+impl<A: Unsigned, B: Unsigned, N: Unsigned>
+NormI<A,B> for UInt<N, B0>
+where N: NormI<UInt<A,B0>, B> {
+  type Output =
+    <N as NormI<UInt<A,B0>, B>>::Output;
 }
 
-impl<N: Unsigned + TypeNumNormalize, Bx: Bit, By: Bit>
-TypeNumNormalize2 for UInt<UInt<N, Bx>, By>
-where Self: TypeNumNormalize {
-  type TypeNorm2 = UInt<UInt<N, Bx>, By>;
+impl<A: Unsigned, B: Unsigned, N: Unsigned>
+NormI<A,B> for UInt<N, B1>
+where N: NormI<UInt<A,B1>, UInt<A,B1>> {
+  type Output =
+    <N as NormI<UInt<A,B1>, UInt<A,B1>>>::Output;
 }
 
-impl TypeNumNormalize2 for UInt<UTerm, B0>
-where Self: Unsigned {
-  type TypeNorm2 = UTerm;
+pub trait Inv<Acc: Unsigned>: Unsigned {
+  type Output: Unsigned;
 }
 
-impl TypeNumNormalize2 for UTerm {
-  type TypeNorm2 = UTerm;
+impl<Acc: Unsigned> Inv<Acc> for UTerm {
+  type Output = Acc;
+}
+
+impl<Acc: Unsigned, N, B: Bit> Inv<Acc> for UInt<N,B>
+where N: Inv<UInt<Acc,B>> {
+  type Output = <N as Inv<UInt<Acc,B>>>::Output;
 }
 

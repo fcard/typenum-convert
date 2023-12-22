@@ -1,0 +1,15 @@
+[package]
+name = "typenum-convert"
+version = "1.0.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+
+[dependencies]
+typenum = "*"
+
+[features]
+default = ['norm']
+norm = []
